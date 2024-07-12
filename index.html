@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record and Upload to Google Drive</title>
+</head>
+<body>
+  <h1>Record and Upload</h1>
+  
+  <form id="mediaForm">
+    <!-- Capture image -->
+    <input type="file" accept="image/*" capture="environment" id="imageInput">
+    
+    <!-- Capture video -->
+    <input type="file" accept="video/*" capture="camcorder" id="videoInput">
+    
+    <button type="submit">Upload</button>
+  </form>
+
+  <script>
+    document.getElementById('mediaForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData();
+      const imageFile = document.getElementById('imageInput').files[0];
+      const videoFile = document.getElementById('videoInput').files[0];
+
+      formData.append('imageFile', imageFile);
+      formData.append('videoFile', videoFile);
+
+      const response = await fetch('https://script.google.com/macros/s/AKfycbx1ne3YWbwOqJGYP3Bi_BlcnZneTJgBcgSYHjcRjZI/exec', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+      console.log('Uploaded files:', result);
+    });
+  </script>
+</body>
+</html>
